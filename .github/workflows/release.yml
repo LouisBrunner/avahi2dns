@@ -22,7 +22,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: avahi2dns-linux-armv5
+        asset_path: avahi2dns-linux-armv5/avahi2dns
         asset_name: avahi2dns-linux-armv5
         asset_content_type: binary/octet-stream
     - name: Upload
@@ -31,7 +31,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: avahi2dns-linux-armv6
+        asset_path: avahi2dns-linux-armv6/avahi2dns
         asset_name: avahi2dns-linux-armv6
         asset_content_type: binary/octet-stream
     - name: Upload
@@ -40,7 +40,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: avahi2dns-linux-armv7
+        asset_path: avahi2dns-linux-armv7/avahi2dns
         asset_name: avahi2dns-linux-armv7
         asset_content_type: binary/octet-stream
     - name: Upload
@@ -49,7 +49,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: avahi2dns-linux-arm64
+        asset_path: avahi2dns-linux-arm64/avahi2dns
         asset_name: avahi2dns-linux-arm64
         asset_content_type: binary/octet-stream
     - name: Upload
@@ -58,7 +58,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: avahi2dns-linux-amd64
+        asset_path: avahi2dns-linux-amd64/avahi2dns
         asset_name: avahi2dns-linux-amd64
         asset_content_type: binary/octet-stream
     - name: Upload
@@ -67,6 +67,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: avahi2dns-linux-i386
+        asset_path: avahi2dns-linux-i386/avahi2dns
         asset_name: avahi2dns-linux-i386
         asset_content_type: binary/octet-stream
