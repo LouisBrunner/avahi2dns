@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  release:
+    types:
+    - created
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download all workflow artifacts
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: ${{ github.event.release.target_commitish }}
+    # FIXME: I hate this
+    - name: Upload
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: avahi2dns-linux-armv5
+        asset_name: avahi2dns-linux-armv5
+        asset_content_type: binary/octet-stream
+    - name: Upload
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: avahi2dns-linux-armv6
+        asset_name: avahi2dns-linux-armv6
+        asset_content_type: binary/octet-stream
+    - name: Upload
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: avahi2dns-linux-armv7
+        asset_name: avahi2dns-linux-armv7
+        asset_content_type: binary/octet-stream
+    - name: Upload
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: avahi2dns-linux-arm64
+        asset_name: avahi2dns-linux-arm64
+        asset_content_type: binary/octet-stream
+    - name: Upload
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: avahi2dns-linux-amd64
+        asset_name: avahi2dns-linux-amd64
+        asset_content_type: binary/octet-stream
+    - name: Upload
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: avahi2dns-linux-i386
+        asset_name: avahi2dns-linux-i386
+        asset_content_type: binary/octet-stream
