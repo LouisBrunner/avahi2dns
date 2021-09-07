@@ -1,0 +1,67 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.17.x]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Vet
+      run: go vet ./...
+    - name: Test
+      run: go test -v ./...
+    - name: Build
+      run: go build -v ./...
+
+  build:
+    needs: test
+    strategy:
+      matrix:
+        include:
+        - arch: arm
+          arm: 5
+        - arch: arm
+          arm: 6
+        - arch: arm
+          arm: 7
+        - arch: arm64
+        - arch: amd64
+        - arch: 386
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.x
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Build
+      run: go build -v ./...
+      env:
+        GOOS: linux
+        GOARCH: ${{ matrix.arch }}
+        GOARM: ${{ matrix.arm }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: avahi2dns-linux-${{ matrix.arch }}${{ matrix.arm }}
+        path: avahi2dns
