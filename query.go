@@ -50,7 +50,7 @@ func avahiToRecord(logger *logrus.Entry, aserver *avahi.Server, name string, pro
 		"type":     recordType,
 		"protocol": proto,
 	}).Info("forwarding query to avahi")
-	hn, err := aserver.ResolveHostName(avahi.InterfaceUnspec, proto, name, avahi.ProtoUnspec, 0)
+	hn, err := aserver.ResolveHostName(avahi.InterfaceUnspec, proto, name, proto, 0)
 	if err != nil {
 		return nil, fmt.Errorf("avahi resolve failure: %w", err)
 	}
