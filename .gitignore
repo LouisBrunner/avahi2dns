@@ -12,4 +12,4 @@
 *.out
 
 vendor/
-avahi2dns
+/avahi2dns
