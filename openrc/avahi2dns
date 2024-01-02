@@ -1,7 +1,7 @@
 #!/sbin/openrc-run
 
-output_logger=logger
-error_logger=logger
+output_logger="logger -t avahi2dns -p daemon.info"
+error_logger="logger -t avahi2dns -p daemon.info"
 command_background=true
 command="avahi2dns"
 pidfile="/run/avahi2dns.pid"
