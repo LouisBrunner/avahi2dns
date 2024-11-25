@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Download all workflow artifacts
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build.yml
         branch: ${{ github.event.release.target_commitish }}
