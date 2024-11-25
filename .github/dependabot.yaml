@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
+
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      major-updates:
+        applies-to: version-updates
+        update-types:
+          - "major"
+      minor-updates:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
