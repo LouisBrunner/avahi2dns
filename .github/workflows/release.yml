@@ -17,7 +17,7 @@ jobs:
           branch: ${{ github.event.release.target_commitish }}
       # FIXME: I hate this
       - name: Upload
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -26,7 +26,7 @@ jobs:
           asset_name: avahi2dns-linux-armv5
           asset_content_type: binary/octet-stream
       - name: Upload
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -35,7 +35,7 @@ jobs:
           asset_name: avahi2dns-linux-armv6
           asset_content_type: binary/octet-stream
       - name: Upload
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -44,7 +44,7 @@ jobs:
           asset_name: avahi2dns-linux-armv7
           asset_content_type: binary/octet-stream
       - name: Upload
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -53,7 +53,7 @@ jobs:
           asset_name: avahi2dns-linux-arm64
           asset_content_type: binary/octet-stream
       - name: Upload
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -62,7 +62,7 @@ jobs:
           asset_name: avahi2dns-linux-amd64
           asset_content_type: binary/octet-stream
       - name: Upload
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
