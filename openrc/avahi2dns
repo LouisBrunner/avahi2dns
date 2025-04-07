@@ -5,3 +5,7 @@ error_logger="logger -t avahi2dns -p daemon.info"
 command_background=true
 command="avahi2dns"
 pidfile="/run/avahi2dns.pid"
+
+depend() {
+	need dbus avahi-daemon
+}

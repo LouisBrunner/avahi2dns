@@ -1,0 +1,31 @@
+FROM alpine:edge AS base
+RUN echo "@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+RUN apk add --no-cache openrc avahi2dns@testing avahi2dns-openrc@testing dbus avahi
+RUN sed -i 's/^\(tty\d\:\:\)/#\1/g' /etc/inittab && \
+  sed -i \
+  -e 's/#rc_sys=".*"/rc_sys="docker"/g' \
+  -e 's/#rc_env_allow=".*"/rc_env_allow="\*"/g' \
+  -e 's/#rc_crashed_stop=.*/rc_crashed_stop=NO/g' \
+  -e 's/#rc_crashed_start=.*/rc_crashed_start=YES/g' \
+  -e 's/#rc_provide=".*"/rc_provide="loopback net"/g' \
+  /etc/rc.conf && \
+  rm -f /etc/init.d/hwdrivers \
+  /etc/init.d/hwclock \
+  /etc/init.d/hwdrivers \
+  /etc/init.d/modules \
+  /etc/init.d/modules-load \
+  /etc/init.d/modloop
+RUN echo 'command_args="--debug --port 53"' > /etc/conf.d/avahi2dns
+RUN rc-update add dbus && rc-update add avahi-daemon && rc-update add avahi2dns
+
+RUN cat > /bin/entrypoint.sh <<EOF && chmod +x /bin/entrypoint.sh
+#!/bin/ash
+
+syslogd
+
+exec /sbin/init
+EOF
+CMD ["/bin/entrypoint.sh"]
+
+FROM base AS debug
+RUN apk add --no-cache gdb strace
