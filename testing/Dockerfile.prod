@@ -28,4 +28,6 @@ EOF
 CMD ["/bin/entrypoint.sh"]
 
 FROM base AS debug
-RUN apk add --no-cache gdb strace
+RUN apk add --no-cache git gdb strace musl-dbg && apk upgrade --no-cache musl
+RUN git clone https://github.com/bminor/musl --branch v1.2.5
+WORKDIR /musl

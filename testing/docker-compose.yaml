@@ -1,0 +1,51 @@
+services:
+  avahi2dns-release:
+    build:
+      dockerfile: Dockerfile.prod
+    privileged: true
+    networks:
+      ip4net:
+      # ip6net:
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+    volumes:
+      - .ash_history:/root/.ash_history
+  avahi2dns-development:
+    build:
+      dockerfile: testing/Dockerfile.dev
+      context: ..
+    privileged: true
+    networks:
+      ip4net:
+      # ip6net:
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+    volumes:
+      - .ash_history:/root/.ash_history
+  # FIXME: those are useless, just leaving them for references
+  # somehost:
+  #   build:
+  #     dockerfile: Dockerfile.dummy
+  #   networks:
+  #     ip4net:
+  #     ip6net:
+  # somehost4:
+  #   build:
+  #     dockerfile: Dockerfile.dummy
+  #   networks:
+  #     ip4net:
+  # somehost6:
+  #   build:
+  #     dockerfile: Dockerfile.dummy
+  #   networks:
+  #     ip6net:
+
+networks:
+  ip4net:
+  ip6net:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 2001:db8:1337::/64

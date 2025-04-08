@@ -8,24 +8,19 @@ jobs:
 
     strategy:
       matrix:
-        go-version: [1.17.x]
+        go-version: [1.24.x]
         os: [ubuntu-latest]
 
     steps:
-      - name: Install Go ${{ matrix.go-version }}
-        uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go-version }}
       - uses: actions/checkout@v4
-      - name: Cache go.mod
-        uses: actions/cache@v4
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
       - name: Vet
-        run: go vet ./...
+        run: |
+          gofmt -d -e -s . | tee /dev/stderr | awk 'END { if (NR > 0) { exit 1 } }'
+          go vet ./...
+          go tool honnef.co/go/tools/cmd/staticcheck ./...
       - name: Test
         run: go test -v ./...
       - name: Build
@@ -56,18 +51,10 @@ jobs:
             arch: 386
 
     steps:
-      - name: Install Go
-        uses: actions/setup-go@v5
+      - uses: actions/setup-go@v5
         with:
-          go-version: 1.17.x
+          go-version: 1.24.x
       - uses: actions/checkout@v4
-      - name: Cache go.mod
-        uses: actions/cache@v4
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
       - name: Build
         run: go build -v ./...
         env:
