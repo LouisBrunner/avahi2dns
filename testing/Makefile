@@ -1,14 +1,24 @@
 all: run
 .PHONY: all
 
-build:
-	docker build -t a2d . --progress plain
-.PHONY: build
-
-run: build
-	docker run --dns=127.0.0.1 --dns=8.8.8.8 -it --rm --name a2d --privileged a2d
+run:
+	touch .ash_history
+	docker compose up --build
 .PHONY: run
 
-shell:
-	docker exec -it a2d ash
-.PHONY: shell
+shell-release:
+	docker compose exec avahi2dns-release ash
+.PHONY: shell-release
+
+shell-development:
+	docker compose exec avahi2dns-development ash
+.PHONY: shell-development
+
+ips:
+	docker ps
+	docker compose exec avahi2dns-release ip addr show dev eth0 | grep inet
+	docker compose exec avahi2dns-development ip addr show dev eth0 | grep inet
+	# docker compose exec somehost ip addr show dev eth0 | grep inet
+	# docker compose exec somehost4 ip addr show dev eth0 | grep inet
+	# docker compose exec somehost6 ip addr show dev eth0 | grep inet
+.PHONY: ips

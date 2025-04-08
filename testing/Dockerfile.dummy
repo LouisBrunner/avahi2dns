@@ -1,0 +1,3 @@
+FROM alpine:edge AS base
+RUN sed -i 's/^tty/#tty/' /etc/inittab
+ENTRYPOINT ["/sbin/init"]

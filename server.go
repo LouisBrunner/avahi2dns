@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	"github.com/godbus/dbus/v5"
 	"github.com/holoplot/go-avahi"
@@ -9,43 +11,73 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func runServer(logger *logrus.Logger, cfg *config) error {
-	// connect to dbus
-	logger.Debug("connection to dbus...")
-	conn, err := dbus.SystemBus()
-	if err != nil {
-		return fmt.Errorf("connection to dbus failed: %w", err)
+type forwarder struct {
+	logger  *logrus.Logger
+	address string
+	dbus    *dbus.Conn
+	avahi   *avahi.Server
+	mux     *dns.ServeMux
+	ctx     context.Context
+	timeout time.Duration
+}
+
+func NewForwarder(logger *logrus.Logger, cfg *config) (*forwarder, error) {
+	srv := &forwarder{
+		logger:  logger,
+		address: fmt.Sprintf("%s:%d", cfg.BindAddr, cfg.Port),
+		mux:     dns.NewServeMux(),
+		timeout: cfg.Timeout,
 	}
 
-	// connect to avahi server
+	var err error
+
+	srv.logger.Debug("connection to dbus...")
+	srv.dbus, err = dbus.SystemBus()
+	if err != nil {
+		return nil, fmt.Errorf("connection to dbus failed: %w", err)
+	}
+
 	logger.Debug("connection to avahi through dbus...")
-	aserver, err := avahi.ServerNew(conn)
+	srv.avahi, err = avahi.ServerNew(srv.dbus)
 	if err != nil {
-		return fmt.Errorf("connection to avahi failed: %w", err)
+		defer srv.dbus.Close()
+		return nil, fmt.Errorf("connection to avahi failed: %w", err)
 	}
 
-	// add dns handlers
-	handler := func(w dns.ResponseWriter, r *dns.Msg) {
-		rlogger := logger.WithField("component", "main")
-		rlogger.WithField("request", r).Debug("received request")
-		m := createDNSReply(rlogger, aserver, r)
-		rlogger.WithField("reply", m).Debug("sending reply")
-		m.SetReply(r)
-		w.WriteMsg(m)
-	}
 	for _, domain := range cfg.Domains {
 		logger.WithField("domain", domain).Debug("adding dns handler")
-		dns.HandleFunc(fmt.Sprintf("%s.", domain), handler)
+		srv.mux.Handle(fmt.Sprintf("%s.", domain), dns.HandlerFunc(srv.onDNSRequest))
 	}
 
-	// start DNS server
-	dserver := &dns.Server{
-		Addr: fmt.Sprintf("%s:%d", cfg.BindAddr, cfg.Port),
-		Net:  "udp",
+	return srv, nil
+}
+
+func (me *forwarder) Close() error {
+	if me.avahi != nil {
+		me.avahi.Close()
 	}
-	logger.WithField("addr", dserver.Addr).Info("starting DNS server")
-	err = dserver.ListenAndServe()
-	defer dserver.Shutdown()
+	if me.dbus != nil {
+		me.dbus.Close()
+	}
+	return nil
+}
+
+func (me *forwarder) Serve(ctx context.Context) error {
+	dserver := &dns.Server{
+		Addr:    me.address,
+		Net:     "udp",
+		Handler: me.mux,
+	}
+
+	me.ctx = ctx
+
+	go func() {
+		<-ctx.Done()
+		dserver.Shutdown()
+	}()
+
+	me.logger.WithField("addr", dserver.Addr).Info("starting DNS server")
+	err := dserver.ListenAndServe()
 	if err != nil {
 		return fmt.Errorf("failed to start DNS server: %w", err)
 	}
