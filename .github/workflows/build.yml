@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go-version }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Vet
         run: |
           gofmt -d -e -s . | tee /dev/stderr | awk 'END { if (NR > 0) { exit 1 } }'
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: 1.24.x
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build
         run: go build -v ./...
         env:
