@@ -12,7 +12,7 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go-version }}
       - uses: actions/checkout@v5
@@ -51,7 +51,7 @@ jobs:
             arch: 386
 
     steps:
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: 1.24.x
       - uses: actions/checkout@v5
