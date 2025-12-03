@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/alexflint/go-arg v1.6.0
-	github.com/godbus/dbus/v5 v5.1.0
+	github.com/godbus/dbus/v5 v5.2.0
 	github.com/holoplot/go-avahi v1.0.1
 	github.com/miekg/dns v1.1.68
 	github.com/sirupsen/logrus v1.9.3
