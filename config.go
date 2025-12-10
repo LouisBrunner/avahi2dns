@@ -22,6 +22,7 @@ type config struct {
 	BindAddr string        `arg:"-a,--addr" default:"localhost" help:"address to bind on" env:"BIND"`
 	Port     uint16        `arg:"-p" default:"53" help:"port to bind on" env:"PORT"`
 	Debug    bool          `arg:"-v" default:"false" help:"also include debug information"`
+	V6only   bool          `arg:"-6" default:"false" help:"only resolve AAAA records"`
 	Timeout  time.Duration `arg:"-t" default:"0s" help:"timeout for the Avahi request, 0 meaning none, see https://pkg.go.dev/time#ParseDuration for units and format"`
 }
 
