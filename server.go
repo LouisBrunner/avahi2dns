@@ -19,6 +19,7 @@ type forwarder struct {
 	mux     *dns.ServeMux
 	ctx     context.Context
 	timeout time.Duration
+	v6only  bool
 }
 
 func NewForwarder(logger *logrus.Logger, cfg *config) (*forwarder, error) {
@@ -27,6 +28,7 @@ func NewForwarder(logger *logrus.Logger, cfg *config) (*forwarder, error) {
 		address: fmt.Sprintf("%s:%d", cfg.BindAddr, cfg.Port),
 		mux:     dns.NewServeMux(),
 		timeout: cfg.Timeout,
+		v6only:  cfg.V6only,
 	}
 
 	var err error

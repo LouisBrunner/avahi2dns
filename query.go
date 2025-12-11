@@ -36,6 +36,9 @@ func (me *forwarder) forwardToAvahi(ctx context.Context, r *dns.Msg) *dns.Msg {
 		for _, q := range r.Question {
 			switch q.Qtype {
 			case dns.TypeA:
+				if me.v6only {
+					continue
+				}
 				rr, err := me.queryAvahi(ctx, q.Name, avahi.ProtoInet, "A")
 				if err != nil {
 					me.logger.WithError(err).Error("avahi A lookup failed, skipping query...")
