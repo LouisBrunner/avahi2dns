@@ -1,0 +1,14 @@
+[Unit]
+Description=Avahi DNS Resolver
+After=network.target
+Requires=dbus-org.freedesktop.Avahi.service
+Wants=dbus-org.freedesktop.Avahi.service
+
+[Service]
+Type=simple
+User=avahi2dns
+ExecStart=/usr/bin/avahi2dns --port 5354 --timeout 2.5s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
