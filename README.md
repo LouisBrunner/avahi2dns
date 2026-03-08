@@ -20,7 +20,7 @@ Usage: avahi2dns [--domains DOMAINS] [--addr ADDR] [--port PORT] [--debug] [--v6
 
 Options:
   --domains DOMAINS, -d DOMAINS
-                         list of domains to resolve (e.g. use '-d local home' to include local and home)
+                         list of domains to resolve (e.g. '-d local -d home')
   --addr ADDR, -a ADDR   address to bind on [default: localhost]
   --port PORT, -p PORT   port to bind on [default: 53]
   --debug, -v            also include debug information [default: false]
