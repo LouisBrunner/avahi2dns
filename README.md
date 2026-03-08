@@ -48,7 +48,7 @@ Settings can be changed through command-line arguments or environment variables:
 ```shell
 $ ./avahi2dns -p 5454 -a '0.0.0.0' -d local home
 or
-$ BIND='0.0.0.0' PORT=5454 ./avahi2dns -d local home
+$ BIND='0.0.0.0' PORT=5454 ./avahi2dns -d local -d home
 ```
 
 You can also use the debug flag if you need more information about what the server is doing (probably overkill):
