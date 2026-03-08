@@ -46,7 +46,7 @@ INFO[0000] starting DNS server                           addr="localhost:53"
 Settings can be changed through command-line arguments or environment variables:
 
 ```shell
-$ ./avahi2dns -p 5454 -a '0.0.0.0' -d local home
+$ ./avahi2dns -p 5454 -a '0.0.0.0' -d local -d home
 or
 $ BIND='0.0.0.0' PORT=5454 ./avahi2dns -d local -d home
 ```
