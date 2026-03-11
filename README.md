@@ -16,14 +16,15 @@ go build
 
 ```shell
 $ ./avahi2dns -h
-Usage: avahi2dns [--domains DOMAINS] [--addr ADDR] [--port PORT] [--debug] [--timeout TIMEOUT]
+Usage: avahi2dns [--domains DOMAINS] [--addr ADDR] [--port PORT] [--debug] [--v6only] [--timeout TIMEOUT]
 
 Options:
   --domains DOMAINS, -d DOMAINS
-                         comma-separated list of domains to resolve
+                         list of domains to resolve (e.g. '-d local -d home')
   --addr ADDR, -a ADDR   address to bind on [default: localhost]
   --port PORT, -p PORT   port to bind on [default: 53]
   --debug, -v            also include debug information [default: false]
+  --v6only, -6           only resolve AAAA records [default: false]
   --timeout TIMEOUT, -t TIMEOUT
                          timeout for the Avahi request, 0 meaning none, see https://pkg.go.dev/time#ParseDuration for units and format [default: 0s]
   --help, -h             display this help and exit
@@ -45,9 +46,9 @@ INFO[0000] starting DNS server                           addr="localhost:53"
 Settings can be changed through command-line arguments or environment variables:
 
 ```shell
-$ ./avahi2dns -p 5454 -a '0.0.0.0' -d 'local,home'
+$ ./avahi2dns -p 5454 -a '0.0.0.0' -d local -d home
 or
-$ BIND='0.0.0.0' PORT=5454 ./avahi2dns -d 'local,home'
+$ BIND='0.0.0.0' PORT=5454 ./avahi2dns -d local -d home
 ```
 
 You can also use the debug flag if you need more information about what the server is doing (probably overkill):
