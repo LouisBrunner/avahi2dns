@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"time"
 
 	"github.com/alexflint/go-arg"
@@ -22,6 +23,7 @@ type config struct {
 	BindAddr string        `arg:"-a,--addr" default:"localhost" help:"address to bind on" env:"BIND"`
 	Port     uint16        `arg:"-p" default:"53" help:"port to bind on" env:"PORT"`
 	Debug    bool          `arg:"-v" default:"false" help:"also include debug information"`
+	V4only   bool          `arg:"-4" default:"false" help:"only resolve A records"`
 	V6only   bool          `arg:"-6" default:"false" help:"only resolve AAAA records"`
 	Timeout  time.Duration `arg:"-t" default:"0s" help:"timeout for the Avahi request, 0 meaning none, see https://pkg.go.dev/time#ParseDuration for units and format"`
 }
@@ -29,6 +31,9 @@ type config struct {
 func parseArgs(logger *logrus.Logger) (*config, error) {
 	cfg := &config{}
 	arg.MustParse(cfg)
+	if cfg.V4only && cfg.V6only {
+		return nil, errors.New("cannot set both --v4only and --v6only")
+	}
 	if len(cfg.Domains) == 0 {
 		cfg.Domains = defaultDomains
 	}
