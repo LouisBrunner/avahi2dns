@@ -6,9 +6,9 @@ Linux DNS-resolution is done by the standard library (through functions like `ge
 
 ## Building
 
-Requires go 1.24 or later
+Requires go 1.26 or later
 
-```
+```bash
 go build
 ```
 
@@ -35,7 +35,8 @@ Options:
 
 ### Examples
 
-By default the server will bind to port 53 on localhost (not accessible outside your computer) and resolve any domain with the following extensions: `home`, `internal`, `intranet`, `lan`, `local`, `private`, `test`
+By default the server will bind to port 53 on localhost (not accessible outside your computer)
+and resolve any domain with the following extensions: `home`, `internal`, `intranet`, `lan`, `local`, `private`, `test`
 
 ```shell
 $ sudo ./avahi2dns
@@ -89,7 +90,7 @@ PING your-name-host.local (172.16.16.2) 56(84) bytes of data.
 
 ### Alpine (edge version)
 
-Feel free to check the Alpine wiki directly for their recommended setup: https://wiki.alpinelinux.org/wiki/MDNS#Setup_avahi2dns
+Feel free to check the Alpine wiki directly for their [recommended setup](https://wiki.alpinelinux.org/wiki/MDNS#Setup_avahi2dns).
 
 > [!NOTE]
 > Thanks to [Willow Barraco](https://cv.willowbarraco.fr/en/), `avahi2dns` is available through the `testing` repository of Alpine.
@@ -112,7 +113,7 @@ rc-service avahi2dns start
 
 ### Any Linux
 
-Checkout the latest release [here](https://github.com/LouisBrunner/avahi2dns/releases/latest) and download the binary corresponding to your architecture.
+Checkout the [latest release](https://github.com/LouisBrunner/avahi2dns/releases/latest) and download the binary corresponding to your architecture.
 
 ```bash
 # make sure to match your system architecture
