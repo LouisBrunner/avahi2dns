@@ -35,7 +35,8 @@ Options:
 
 ### Examples
 
-By default the server will bind to port 53 on localhost (not accessible outside your computer) and resolve any domain with the following extensions: `home`, `internal`, `intranet`, `lan`, `local`, `private`, `test`
+By default the server will bind to port 53 on localhost (not accessible outside your computer)
+and resolve any domain with the following extensions: `home`, `internal`, `intranet`, `lan`, `local`, `private`, `test`
 
 ```shell
 $ sudo ./avahi2dns
