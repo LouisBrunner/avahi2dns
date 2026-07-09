@@ -77,7 +77,10 @@ func (me *forwarder) Serve(ctx context.Context) error {
 
 	go func() {
 		<-ctx.Done()
-		dserver.Shutdown()
+		err := dserver.Shutdown()
+		if err != nil {
+			me.logger.WithError(err).Error("failed to shut down DNS server")
+		}
 	}()
 
 	me.logger.WithField("addr", dserver.Addr).Info("starting DNS server")

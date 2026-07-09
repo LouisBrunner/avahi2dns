@@ -1,6 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/dependabot-2.0.json
 version: 2
 updates:
   - package-ecosystem: "github-actions"
+    cooldown:
+      default-days: 7
     directory: "/"
     schedule:
       interval: "weekly"
@@ -23,7 +26,61 @@ updates:
         patterns:
           - "*"
 
+  - package-ecosystem: "docker"
+    cooldown:
+      default-days: 7
+    directories:
+      - "/testing"
+    schedule:
+      interval: "weekly"
+    groups:
+      docker-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      docker-major:
+        applies-to: version-updates
+        update-types:
+          - "major"
+        patterns:
+          - "*"
+      docker-minor:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "docker-compose"
+    cooldown:
+      default-days: 7
+    directories:
+      - "/testing"
+    schedule:
+      interval: "weekly"
+    groups:
+      docker-compose-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      docker-compose-major:
+        applies-to: version-updates
+        update-types:
+          - "major"
+        patterns:
+          - "*"
+      docker-compose-minor:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "*"
+
   - package-ecosystem: "gomod"
+    cooldown:
+      default-days: 7
     directory: "/"
     schedule:
       interval: "weekly"

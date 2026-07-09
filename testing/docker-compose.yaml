@@ -1,3 +1,4 @@
+# $schema:https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json
 services:
   avahi2dns-release:
     build:
@@ -24,23 +25,23 @@ services:
       - 8.8.8.8
     volumes:
       - .ash_history:/root/.ash_history
-  # FIXME: those are useless, just leaving them for references
-  # somehost:
-  #   build:
-  #     dockerfile: Dockerfile.dummy
-  #   networks:
-  #     ip4net:
-  #     ip6net:
-  # somehost4:
-  #   build:
-  #     dockerfile: Dockerfile.dummy
-  #   networks:
-  #     ip4net:
-  # somehost6:
-  #   build:
-  #     dockerfile: Dockerfile.dummy
-  #   networks:
-  #     ip6net:
+      # FIXME: those are useless, just leaving them for references
+      # somehost:
+      #   build:
+      #     dockerfile: Dockerfile.dummy
+      #   networks:
+      #     ip4net:
+      #     ip6net:
+      # somehost4:
+      #   build:
+      #     dockerfile: Dockerfile.dummy
+      #   networks:
+      #     ip4net:
+      # somehost6:
+      #   build:
+      #     dockerfile: Dockerfile.dummy
+      #   networks:
+      #     ip6net:
 
 networks:
   ip4net:
