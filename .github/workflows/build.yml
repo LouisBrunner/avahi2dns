@@ -58,9 +58,12 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Build
+      - name: Generate
         run: |
           go generate ./...
+
+      - name: Build
+        run: |
           go build -v ./...
         env:
           GOOS: linux
