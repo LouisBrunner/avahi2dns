@@ -7,21 +7,21 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 
 FROM alpine:edge AS base
 RUN apk add --no-cache openrc dbus avahi
-RUN sed -i 's/^\(tty\d\:\:\)/#\1/g' /etc/inittab && \
-  sed -i \
-  -e 's/#rc_sys=".*"/rc_sys="docker"/g' \
-  -e 's/#rc_env_allow=".*"/rc_env_allow="\*"/g' \
-  -e 's/#rc_crashed_stop=.*/rc_crashed_stop=NO/g' \
-  -e 's/#rc_crashed_start=.*/rc_crashed_start=YES/g' \
-  -e 's/#rc_provide=".*"/rc_provide="loopback net"/g' \
-  /etc/rc.conf && \
-  rm -f /etc/init.d/hwdrivers \
-  /etc/init.d/hwclock \
-  /etc/init.d/hwdrivers \
-  /etc/init.d/modules \
-  /etc/init.d/modules-load \
-  /etc/init.d/modloop
-RUN echo 'command_args="--debug --port 53 --timeout 2.5s"' > /etc/conf.d/avahi2dns
+RUN sed -i 's/^\(tty\d\:\:\)/#\1/g' /etc/inittab \
+  && sed -i \
+    -e 's/#rc_sys=".*"/rc_sys="docker"/g' \
+    -e 's/#rc_env_allow=".*"/rc_env_allow="\*"/g' \
+    -e 's/#rc_crashed_stop=.*/rc_crashed_stop=NO/g' \
+    -e 's/#rc_crashed_start=.*/rc_crashed_start=YES/g' \
+    -e 's/#rc_provide=".*"/rc_provide="loopback net"/g' \
+    /etc/rc.conf \
+  && rm -f /etc/init.d/hwdrivers \
+    /etc/init.d/hwclock \
+    /etc/init.d/hwdrivers \
+    /etc/init.d/modules \
+    /etc/init.d/modules-load \
+    /etc/init.d/modloop
+RUN echo 'command_args="--debug --port 53 --timeout 2.5s"' >/etc/conf.d/avahi2dns
 COPY openrc/avahi2dns /etc/init.d/
 COPY --from=builder /bin/avahi2dns /usr/bin/avahi2dns
 RUN rc-update add dbus && rc-update add avahi-daemon && rc-update add avahi2dns

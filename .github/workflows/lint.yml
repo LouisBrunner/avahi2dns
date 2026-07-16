@@ -25,3 +25,5 @@ jobs:
     uses: LouisBrunner/.github/.github/workflows/lint-go.yml@main
     permissions:
       contents: read
+    with:
+      generate: true
