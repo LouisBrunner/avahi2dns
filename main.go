@@ -21,11 +21,16 @@ func work(ctx context.Context, logger *logrus.Logger) error {
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	fwd, err := NewForwarder(logger, cfg)
+	avahi, err := newAvahiClient()
+	if err != nil {
+		return fmt.Errorf("failed to connect to avahi: %w", err)
+	}
+	defer avahi.Close()
+
+	fwd, err := NewForwarder(logger, cfg, avahi)
 	if err != nil {
 		return fmt.Errorf("failed to create server: %w", err)
 	}
-	defer fwd.Close()
 
 	return fwd.Serve(ctx)
 }

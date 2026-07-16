@@ -20,17 +20,19 @@ var defaultDomains = []string{
 
 type config struct {
 	Domains  []string      `arg:"-d,separate" help:"list of domains to resolve (e.g. '-d local -d home')"`
-	BindAddr string        `arg:"-a,--addr" default:"localhost" help:"address to bind on" env:"BIND"`
-	Port     uint16        `arg:"-p" default:"53" help:"port to bind on" env:"PORT"`
+	BindAddr string        `arg:"-a,--addr,env:BIND" default:"localhost" help:"address to bind on"`
+	Port     uint16        `arg:"-p,env:PORT" default:"53" help:"port to bind on"`
 	Debug    bool          `arg:"-v" default:"false" help:"also include debug information"`
 	V4only   bool          `arg:"-4" default:"false" help:"only resolve A records"`
 	V6only   bool          `arg:"-6" default:"false" help:"only resolve AAAA records"`
 	Timeout  time.Duration `arg:"-t" default:"0s" help:"timeout for the Avahi request, 0 meaning none, see https://pkg.go.dev/time#ParseDuration for units and format"`
 }
 
+var mustParse = arg.MustParse
+
 func parseArgs(logger *logrus.Logger) (*config, error) {
 	cfg := &config{}
-	arg.MustParse(cfg)
+	mustParse(cfg)
 	if cfg.V4only && cfg.V6only {
 		return nil, errors.New("cannot set both --v4only and --v6only")
 	}

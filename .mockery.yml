@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://schemas.lbrunner.net/mockery/config.schema.json
+formatter: gofmt
+recursive: true
+template: testify
+filename: "mock_{{.InterfaceName}}_test.go"
+all: true
+packages:
+  github.com/LouisBrunner/avahi2dns:
+    config:

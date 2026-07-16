@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/holoplot/go-avahi"
 	"github.com/miekg/dns"
@@ -33,8 +34,18 @@ func (me *forwarder) forwardToAvahi(ctx context.Context, r *dns.Msg) *dns.Msg {
 
 	switch r.Opcode {
 	case dns.OpcodeQuery:
+		m.Authoritative = true
+
 		for _, q := range r.Question {
 			switch q.Qtype {
+			case dns.TypeSOA:
+				rr, err := me.soaRecord(q.Name)
+				if err != nil {
+					me.logger.WithError(err).WithField("name", q.Name).Warning("unsupported SOA query")
+					continue
+				}
+				m.Answer = append(m.Answer, rr)
+
 			case dns.TypeA:
 				if me.v6only {
 					continue
@@ -67,6 +78,17 @@ func (me *forwarder) forwardToAvahi(ctx context.Context, r *dns.Msg) *dns.Msg {
 	}
 
 	return m
+}
+
+func (me *forwarder) soaRecord(name string) (dns.RR, error) {
+	if !me.domains[strings.ToLower(name)] {
+		return nil, fmt.Errorf("not an authoritative zone apex: %s", name)
+	}
+	rr, err := dns.NewRR(fmt.Sprintf("%s 10 SOA %s avahi2dns.%s 1 60 60 3600 10", name, name, name))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create SOA record: %w", err)
+	}
+	return rr, nil
 }
 
 func (me *forwarder) queryAvahi(ctx context.Context, name string, proto int32, recordType string) (dns.RR, error) {

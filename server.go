@@ -3,10 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
-	"github.com/godbus/dbus/v5"
-	"github.com/holoplot/go-avahi"
 	"github.com/miekg/dns"
 	"github.com/sirupsen/logrus"
 )
@@ -14,56 +13,35 @@ import (
 type forwarder struct {
 	logger  *logrus.Logger
 	address string
-	dbus    *dbus.Conn
-	avahi   *avahi.Server
+	avahi   avahiClient
 	mux     *dns.ServeMux
 	ctx     context.Context
 	timeout time.Duration
 	v4only  bool
 	v6only  bool
+	domains map[string]bool
 }
 
-func NewForwarder(logger *logrus.Logger, cfg *config) (*forwarder, error) {
+func NewForwarder(logger *logrus.Logger, cfg *config, avahi avahiClient) (*forwarder, error) {
 	srv := &forwarder{
 		logger:  logger,
 		address: fmt.Sprintf("%s:%d", cfg.BindAddr, cfg.Port),
+		avahi:   avahi,
 		mux:     dns.NewServeMux(),
 		timeout: cfg.Timeout,
 		v4only:  cfg.V4only,
 		v6only:  cfg.V6only,
-	}
-
-	var err error
-
-	srv.logger.Debug("connection to dbus...")
-	srv.dbus, err = dbus.SystemBus()
-	if err != nil {
-		return nil, fmt.Errorf("connection to dbus failed: %w", err)
-	}
-
-	logger.Debug("connection to avahi through dbus...")
-	srv.avahi, err = avahi.ServerNew(srv.dbus)
-	if err != nil {
-		defer srv.dbus.Close()
-		return nil, fmt.Errorf("connection to avahi failed: %w", err)
+		domains: make(map[string]bool, len(cfg.Domains)),
 	}
 
 	for _, domain := range cfg.Domains {
 		logger.WithField("domain", domain).Debug("adding dns handler")
-		srv.mux.Handle(fmt.Sprintf("%s.", domain), dns.HandlerFunc(srv.onDNSRequest))
+		fqdn := dns.Fqdn(domain)
+		srv.mux.Handle(fqdn, dns.HandlerFunc(srv.onDNSRequest))
+		srv.domains[strings.ToLower(fqdn)] = true
 	}
 
 	return srv, nil
-}
-
-func (me *forwarder) Close() error {
-	if me.avahi != nil {
-		me.avahi.Close()
-	}
-	if me.dbus != nil {
-		me.dbus.Close()
-	}
-	return nil
 }
 
 func (me *forwarder) Serve(ctx context.Context) error {

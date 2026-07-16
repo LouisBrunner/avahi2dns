@@ -18,7 +18,9 @@ jobs:
     permissions:
       contents: read
     with:
-      run: go test -v ./...
+      run: |
+        go generate ./...
+        go test -v ./...
 
   cross-build:
     name: Cross-compile

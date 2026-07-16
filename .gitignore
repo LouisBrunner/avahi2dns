@@ -13,3 +13,5 @@
 
 vendor/
 /avahi2dns
+
+mock_*.go
