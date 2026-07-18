@@ -27,5 +27,6 @@ jobs:
           TAG: ${{ github.event.release.tag_name }}
         run: |
           for arch in armv5 armv6 armv7 arm64 amd64 i386; do
-            gh release upload "$TAG" "avahi2dns-linux-${arch}/avahi2dns#avahi2dns-linux-${arch}"
+            mv "avahi2dns-linux-${arch}/avahi2dns" "avahi2dns-linux-${arch}/avahi2dns-linux-${arch}"
+            gh release upload "$TAG" "avahi2dns-linux-${arch}/avahi2dns-linux-${arch}"
           done
