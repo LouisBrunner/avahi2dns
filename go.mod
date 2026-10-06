@@ -10,7 +10,7 @@ tool (
 require (
 	github.com/alexflint/go-arg v1.6.1
 	github.com/godbus/dbus/v5 v5.2.2
-	github.com/holoplot/go-avahi v1.0.1
+	github.com/holoplot/go-avahi v1.1.0
 	github.com/miekg/dns v1.1.73
 	github.com/sirupsen/logrus v1.10.2
 	github.com/stretchr/testify v1.12.1
@@ -42,7 +42,6 @@ require (
 	github.com/rs/zerolog v1.34.0 // indirect
 	github.com/spf13/cobra v1.10.2 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
-	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/vektra/mockery/v3 v3.7.1 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
