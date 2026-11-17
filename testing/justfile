@@ -1,0 +1,20 @@
+just := just_executable()
+
+run:
+    docker compose up --build
+
+shell-release: (_docker-exec "release" "ash")
+
+shell-development: (_docker-exec "development" "ash")
+
+ips:
+    docker ps
+    @{{ just }} _docker-exec release ip addr show dev eth0 | grep inet
+    @{{ just }} _docker-exec development ip addr show dev eth0 | grep inet
+    # docker compose exec somehost ip addr show dev eth0 | grep inet
+    # docker compose exec somehost4 ip addr show dev eth0 | grep inet
+    # docker compose exec somehost6 ip addr show dev eth0 | grep inet
+
+[private]
+_docker-exec env *args:
+    docker compose exec avahi2dns-{{ env }} {{ args }}
