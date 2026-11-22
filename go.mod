@@ -1,6 +1,6 @@
 module github.com/LouisBrunner/avahi2dns
 
-go 1.26.8
+go 1.26.11
 
 tool (
 	github.com/vektra/mockery/v3
