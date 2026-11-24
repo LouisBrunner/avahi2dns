@@ -9,7 +9,7 @@ workflows:
         - 'actions/upload-artifact@v7.0.2'
     '.github/workflows/lint.yml': []
     '.github/workflows/release.yml':
-        - 'dawidd6/action-download-artifact@v27'
+        - 'dawidd6/action-download-artifact@v28'
 dependencies:
     'actions/checkout@v7.0.1':
         ref: 'v7.0.1'
@@ -26,8 +26,8 @@ dependencies:
         commit: 'sha1-cf430e030ddbb5b0abf93d22962f4752f3646cd9'
         owner_id: 44036562
         repo_id: 192625955
-    'dawidd6/action-download-artifact@v27':
-        ref: 'v27'
-        commit: 'sha1-eab87c9830c39eff17e5a6eadb20bfb4bc880477'
+    'dawidd6/action-download-artifact@v28':
+        ref: 'v28'
+        commit: 'sha1-a92c7ae74cf1df8810783758581e485ac3aaa309'
         owner_id: 9713907
         repo_id: 239218448
